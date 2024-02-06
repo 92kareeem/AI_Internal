@@ -1,0 +1,42 @@
+
+import heapq
+def astar_search (graph, start, goal, heuristic): open_list = [(0+ heuristic [start], 0, start)] came_from= {}
+g_score = {node: float('inf') for node in graph} g_score [start] = 0
+while open_list:
+current_cost, current_node = heapq.heappop (open_list)
+if current_node == goal:
+path = reconstruct_path(came_from, current_node) return path, current_cost
+for neighbor, cost in graph[current_node].items(): tentative_g_score = g_score [current_node] + cost if tentative_g_score < g_score [neighbor]: g_score [neighbor] = tentative_g_score
+f_score = g_score [neighbor] + heuristic [neighbor]
+heapq.heappush (open_list, (f_score, tentative_g_score, neigh came from [neighbor] = current_node
+return None, float('inf') # Return None and infinity if no path is foun
+In [3]: def reconstruct_path (came from, current_node):
+path = [current_node]
+while current_node in came_from:
+current_node = came_from[current_node] path.insert(0, current_node)
+return path
+In [4]: # Example usage:
+# Define your graph as an adjacency List
+graph = {
+'A': 'B': 5, 'C': 3},
+'B': {'D': 8, 'E': 6},
+'C': {'E': 2, 'F': 4},
+'D': {'G': 9}, 'E': {'G': 7},
+'F': {}, 'G': {}
+}
+heuristic = {
+'A': 10,
+'B': 8,
+'C': 7,
+'D': 6,
+'E': 4,
+'F': 3,
+'G': 0
+}
+start_node = 'A'
+goal_node = 'G'
+path, total_cost = astar_search(graph, start_node, goal_node, heuristic)
+if path:
+print(f'Path from {start_node} to {goal_node}: {" -> ".join(path)}') print (f'Lowest total cost: {total_cost}')
+else:
+print (f'No path from {start_node} to {goal_node} found.')
